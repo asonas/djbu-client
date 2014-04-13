@@ -10,7 +10,9 @@ json = JSON.parse(Net::HTTP.get(uri))
 
 if json['url']
   options = "-o 'music/%(uploader)s/%(title)s.%(ext)s' --write-thumbnail --write-description --write-info-json"
-  system "youtube-dl", options, json['url']
-else
-  puts "nothig queue"
+  Idobata::Message.create(source: "Downloading #{json['url']}", label: { type: :warning, text: "djbu-client" })
+  result = `youtube-dl #{options} #{json['url']}`.split("\n")
+  last = result.pop
+  result << last.gsub("[K", "").split("\r\e").uniq
+  Idobata::Message.create(source: result.join("<br />"), label: { type: :success, text: "djbu-client" })
 end
