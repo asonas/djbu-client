@@ -9,7 +9,7 @@ uri = URI.parse(end_point)
 json = JSON.parse(Net::HTTP.get(uri))
 
 if json['url']
-  options = "-o 'music/%(uploader)s/%(title)s.%(ext)s' --write-thumbnail --write-description --write-info-json"
+  options = "-o 'music/%(extractor)s/%(uploader)s/%(title)s.%(ext)s' --write-thumbnail --write-description --write-info-json"
   Idobata::Message.create(source: "Downloading #{json['url']}", label: { type: :warning, text: "djbu-client" })
   result = `youtube-dl #{options} #{json['url']}`.split("\n")
   last = result.pop
