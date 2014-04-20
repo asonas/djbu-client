@@ -21,7 +21,7 @@
 
 set :output, "cron.log"
 
-ever 1.minuts do
+every 1.minutes do
   command "ruby client.rb"
   command "chown -R asonas:users music/"
 end
