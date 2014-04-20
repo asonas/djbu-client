@@ -33,7 +33,6 @@ track = JSON.parse(`youtube-dl --dump-json #{json['url']}`)
 TagLib::MPEG::File.open(music) do |file|
   tag = file.id3v2_tag
   tag.artist = track['uploader']
-  tag.description = track['webpage_url']
 
   pic = TagLib::ID3v2::AttachedPictureFrame.new
   pic.picture = File.open(cover_art, 'rb') { |f| f.read }
