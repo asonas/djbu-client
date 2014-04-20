@@ -19,7 +19,7 @@
 
 # Learn more: http://github.com/javan/whenever
 
-set :output, "cron.log"
+set :output, "/home/asonas/djbu-client/cron.log"
 
 every 1.minutes do
   command "ruby client.rb"
