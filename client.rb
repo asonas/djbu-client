@@ -1,7 +1,7 @@
 require "json"
 require "net/http"
 require "idobata"
-require "taglib-ruby"
+require "taglib"
 
 Idobata.hook_url = "https://idobata.io/hook/d6431e97-cf9e-4983-a66b-ae83b892bdce"
 end_point = "http://djbu.ason.as/music"
@@ -9,7 +9,7 @@ end_point = "http://djbu.ason.as/music"
 uri = URI.parse(end_point)
 json = JSON.parse(Net::HTTP.get(uri))
 
-return false unless json['url']
+exit unless json['url']
 
 base_path  = "/home/asonas/djbu-client/music"
 
@@ -23,16 +23,20 @@ Idobata::Message.create(source: result.join("<br />"), label: { type: :success, 
 last_directory = `ls -t /home/asonas/djbu-client/music/soundcloud`.split("\n").first
 last_directory_path = "#{base_path}/soundcloud/#{last_directory}"
 
-cover_art = `find #{last_directory_path} -name "*jpg"`.gsub("\n", "")
-music = `find #{last_directory_path} -name "*mp3"`.gsub("\n", "")
+file_name = `youtube-dl --get-title #{json['url']}`.gsub("\n", "")
+cover_art = "#{last_directory_path}/#{file_name}.jpg"
+exit unless File.exists?(cover_art)
+music = "#{last_directory_path}/#{file_name}.mp3"
 
-picture_data = open(cover_art).read
+track = JSON.parse(`youtube-dl --dump-json #{json['url']}`)
 
 TagLib::MPEG::File.open(music) do |file|
   tag = file.id3v2_tag
+  tag.artist = track['uploader']
+  tag.description = track['webpage_url']
 
   pic = TagLib::ID3v2::AttachedPictureFrame.new
-  pic.picture = picture_data
+  pic.picture = File.open(cover_art, 'rb') { |f| f.read }
   pic.mime_type = "image/jpeg"
   pic.type = TagLib::ID3v2::AttachedPictureFrame::FrontCover
 
