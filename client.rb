@@ -28,6 +28,9 @@ cover_art = "#{last_directory_path}/#{file_name}.jpg"
 exit unless File.exists?(cover_art)
 music = "#{last_directory_path}/#{file_name}.mp3"
 
+text = "Downloaded #{file_name}"
+`curl -d token=xoxp-2314826254-2314826256-2370224920-6085a7 -d channel=C0298QA7Q -d text=#{text} -d username=asoNAS https://slack.com/api/chat.postMessage`
+
 track = JSON.parse(`youtube-dl --dump-json #{json['url']}`)
 
 TagLib::MPEG::File.open(music) do |file|
