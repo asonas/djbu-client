@@ -25,4 +25,5 @@ every 1.minutes do
   base_path = '/home/asonas/djbu-client'
   command "ruby #{base_path}/client.rb"
   command "chown -R asonas:users #{base_path}/music/"
+  command "rsync --checksum -av #{base_path}/music/ amanusa:/var/www/namanas/files"
 end
