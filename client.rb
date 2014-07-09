@@ -45,3 +45,5 @@ TagLib::MPEG::File.open(music) do |file|
   tag.add_frame(pic)
   file.save
 end
+
+`sh /home/asonas/djbu-client/rsync.sh`
