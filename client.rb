@@ -11,7 +11,7 @@ json = JSON.parse(Net::HTTP.get(uri))
 
 exit unless json['url']
 
-base_path  = "/home/asonas/djbu-client/music"
+base_path  = "/home/asonas/app/djbu-client/music"
 
 options = "-o '#{base_path}/%(extractor)s/%(uploader)s/%(title)s.%(ext)s' --write-thumbnail --write-description --write-info-json"
 Idobata::Message.create(source: "Downloading #{json['url']}", label: { type: :warning, text: "djbu-client" })
@@ -20,7 +20,7 @@ last = result.pop
 result << last.gsub("[K", "").split("\r\e").uniq
 Idobata::Message.create(source: result.join("<br />"), label: { type: :success, text: "djbu-client" })
 
-last_directory = `ls -t /home/asonas/djbu-client/music/soundcloud`.split("\n").first
+last_directory = `ls -t /home/asonas/app/djbu-client/music/soundcloud`.split("\n").first
 last_directory_path = "#{base_path}/soundcloud/#{last_directory}"
 
 file_name = `youtube-dl --get-title #{json['url']}`.gsub("\n", "")
@@ -47,4 +47,4 @@ TagLib::MPEG::File.open(music) do |file|
 end
 
 `curl -F file="@#{music}" -F title=#{file_name} -F channels=C0298QA7Q -F token=#{ENV['SLACK_TOKEN']} https://slack.com/api/files.upload`
-`sh /home/asonas/djbu-client/rsync.sh`
+`sh /home/asonas/app/djbu-client/rsync.sh`

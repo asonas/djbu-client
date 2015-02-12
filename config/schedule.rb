@@ -24,5 +24,5 @@ set :output, "/home/asonas/djbu-client/cron.log"
 every 1.minutes do
   base_path = '/home/asonas/djbu-client'
   command "ruby #{base_path}/client.rb"
-  command "chown -R asonas:users #{base_path}/music/"
+  command "chown -R asonas:wheel #{base_path}/music/"
 end
