@@ -1,12 +1,7 @@
 require "json"
 require "net/http"
 require "idobata"
-require "slack-api"
 require "taglib"
-
-Slack.configure do |config|
-  config.token = ENV["SLACK_TOKEN"]
-end
 
 Idobata.hook_url = "https://idobata.io/hook/d6431e97-cf9e-4983-a66b-ae83b892bdce"
 end_point = "http://djbu.ason.as/music"
