@@ -31,7 +31,7 @@ music = "#{last_directory_path}/#{file_name}.mp3"
 text = "Downloaded #{file_name}"
 `curl -d token=#{ENV['SLACK_TOKEN']} -d channel=C0298QA7Q -d text='#{text}' -d username=asoNAS https://slack.com/api/chat.postMessage`
 
-track = JSON.parse(`youtube-dl --dump-json #{json['url']}`)
+track = JSON.parse(`youtube-dl --dump-json '#{json['url']}'`)
 
 TagLib::MPEG::File.open(music) do |file|
   tag = file.id3v2_tag
@@ -46,5 +46,5 @@ TagLib::MPEG::File.open(music) do |file|
   file.save
 end
 
-`curl -F file="@#{music}" -F title=#{file_name} -F channels=C0298QA7Q -F token=#{ENV['SLACK_TOKEN']} https://slack.com/api/files.upload`
+`curl -F file="@#{music}" -F title='#{file_name}' -F channels=C0298QA7Q -F token=#{ENV['SLACK_TOKEN']} https://slack.com/api/files.upload`
 `sh /home/asonas/app/djbu-client/rsync.sh`
