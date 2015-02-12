@@ -29,7 +29,7 @@ exit unless File.exists?(cover_art)
 music = "#{last_directory_path}/#{file_name}.mp3"
 
 text = "Downloaded #{file_name}"
-`curl -d token=#{ENV['SLACK_TOKEN']} -d channel=C0298QA7Q -d text=#{text} -d username=asoNAS https://slack.com/api/chat.postMessage`
+`curl -d token=#{ENV['SLACK_TOKEN']} -d channel=C0298QA7Q -d text='#{text}' -d username=asoNAS https://slack.com/api/chat.postMessage`
 
 track = JSON.parse(`youtube-dl --dump-json #{json['url']}`)
 
