@@ -48,3 +48,4 @@ end
 
 `curl -F file="@#{music}" -F title='#{file_name}' -F channels=C0298QA7Q -F token=#{ENV['SLACK_TOKEN']} https://slack.com/api/files.upload`
 `sh /home/asonas/app/djbu-client/rsync.sh`
+`rm -rf music/soundcloud`
