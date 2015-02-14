@@ -20,7 +20,7 @@ last = result.pop
 result << last.gsub("[K", "").split("\r\e").uniq
 Idobata::Message.create(source: result.join("<br />"), label: { type: :success, text: "djbu-client" })
 
-last_directory = `ls -t /home/asonas/app/djbu-client/music/soundcloud`.split("\n").first
+last_directory = `ls -t #{base_path}/soundcloud`.split("\n").first
 last_directory_path = "#{base_path}/soundcloud/#{last_directory}"
 
 file_name = `youtube-dl --get-title "#{json['url']}"`.gsub("\n", "")
