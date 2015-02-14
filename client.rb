@@ -15,7 +15,7 @@ base_path  = "/home/asonas/app/djbu-client/music"
 
 options = "-o '#{base_path}/%(extractor)s/%(uploader)s/%(title)s.%(ext)s' --write-thumbnail --write-description --write-info-json"
 Idobata::Message.create(source: "Downloading #{json['url']}", label: { type: :warning, text: "djbu-client" })
-result = `youtube-dl #{options} #{json['url']}`.split("\n")
+result = `youtube-dl #{options} "#{json['url']}"`.split("\n")
 last = result.pop
 result << last.gsub("[K", "").split("\r\e").uniq
 Idobata::Message.create(source: result.join("<br />"), label: { type: :success, text: "djbu-client" })
@@ -23,7 +23,7 @@ Idobata::Message.create(source: result.join("<br />"), label: { type: :success, 
 last_directory = `ls -t /home/asonas/app/djbu-client/music/soundcloud`.split("\n").first
 last_directory_path = "#{base_path}/soundcloud/#{last_directory}"
 
-file_name = `youtube-dl --get-title #{json['url']}`.gsub("\n", "")
+file_name = `youtube-dl --get-title "#{json['url']}"`.gsub("\n", "")
 cover_art = "#{last_directory_path}/#{file_name}.jpg"
 exit unless File.exists?(cover_art)
 music = "#{last_directory_path}/#{file_name}.mp3"
@@ -31,7 +31,7 @@ music = "#{last_directory_path}/#{file_name}.mp3"
 text = "Downloaded #{file_name}"
 `curl -d token=#{ENV['SLACK_TOKEN']} -d channel=C0298QA7Q -d text='#{text}' -d username=asoNAS https://slack.com/api/chat.postMessage`
 
-track = JSON.parse(`youtube-dl --dump-json '#{json['url']}'`)
+track = JSON.parse(`youtube-dl --dump-json "#{json['url']}"`)
 
 TagLib::MPEG::File.open(music) do |file|
   tag = file.id3v2_tag
